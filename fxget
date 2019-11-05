@@ -39,8 +39,6 @@ else:
 	print(fxfrom, '->', fx, n)
 	url = 'https://api.exchangeratesapi.io/latest?base=' + fxfrom + '&symbols=' + fx
 	json = requests.get(url).json()
-	print(url)
-	print(json)
 	rate = json['rates'][fx]
 	print(str(n) + fxfrom + ' = ' + CURSES_PRE + str(int(float(rate) * n)) + CURSES_POST + str(fx))
 

@@ -2,6 +2,10 @@
 
 import requests
 import sys
+import platform
+
+CURSES_PRE = '' if 'Windows' in platform.system() else '\033[1m'
+CURSES_POST = '' if 'Windows' in platform.system() else '\033[0m'
 
 def isnumber(x):
 	try:
@@ -21,17 +25,23 @@ for a in sys.argv[1:]:
 	else:
 		fx = a.upper()
 
-if fx == '':
-	fx = 'HUF'
 
 print(fxfrom, '->', fx, n)
 
-url = 'https://api.exchangeratesapi.io/latest?base=' + fxfrom + '&symbols=' + fx
-json = requests.get(url).json()
+if fxfrom == '' and fx == '':
+	url = 'https://api.exchangeratesapi.io/latest?base=HUF'
+	json = requests.get(url).json()
 
-rate = json['rates'][fx]
+	for fx in ['EUR', 'USD', 'GBP']:
+		rate = json['rates'][fx]
+		print(str(n) + fx  + ' = ' + CURSES_PRE + str(int(float(n) / float(rate))) + CURSES_POST + 'HUF')
+else:
+	if fx == '':
+	        fx = 'HUF'
+	url = 'https://api.exchangeratesapi.io/latest?base=' + fxfrom + '&symbols=' + fx
+	json = requests.get(url).json()
+	print(url)
+	print(json)
+	rate = json['rates'][fx]
+	print(str(n) + fxfrom + ' = ' + CURSES_PRE + str(int(float(rate) * n)) + CURSES_POST + str(fx))
 
-print(str(n) + fxfrom + ' = \033[1m' + str(int(float(rate) * n)) + '\033[0m' + str(fx))
-
-
-	

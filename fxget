@@ -26,18 +26,17 @@ for a in sys.argv[1:]:
 		fx = a.upper()
 
 
-print(fxfrom, '->', fx, n)
-
 if fxfrom == '' and fx == '':
 	url = 'https://api.exchangeratesapi.io/latest?base=HUF'
 	json = requests.get(url).json()
 
-	for fx in ['EUR', 'USD', 'GBP']:
+	for fx in ['EUR', 'GBP', 'USD']:
 		rate = json['rates'][fx]
-		print(str(n) + fx  + ' = ' + CURSES_PRE + str(int(float(n) / float(rate))) + CURSES_POST + 'HUF')
+		print(str(n) + ' ' + fx  + ' = ' + CURSES_PRE + str(int(float(n) / float(rate))) + CURSES_POST + ' HUF')
 else:
 	if fx == '':
 	        fx = 'HUF'
+	print(fxfrom, '->', fx, n)
 	url = 'https://api.exchangeratesapi.io/latest?base=' + fxfrom + '&symbols=' + fx
 	json = requests.get(url).json()
 	print(url)
